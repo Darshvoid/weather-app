@@ -1,65 +1,51 @@
+import icons from "../icons/index.js";
+
 const root = document.documentElement;
-const currentTheme = getComputedStyle(
-  document.documentElement,
-).getPropertyValue("color-scheme");
-// THEME HANDLING
+
+const getScheme = () =>
+  getComputedStyle(root).getPropertyValue("color-scheme").trim();
+
+const getWeatherIcon = (name, scheme) => {
+  if (scheme === "light") {
+    return icons.weather[`${name}-dark`] || icons.weather[name];
+  }
+
+  return icons.weather[name];
+};
 
 const domActions = {
   changeTheme(theme) {
     const themeIcon = document.getElementById("theme-icon");
     const searchIcon = document.getElementById("search-icon");
-    const currentColorScheme =
-      getComputedStyle(root).getPropertyValue("color-scheme");
     const days = document.querySelectorAll(".day-icon");
     const weatherIcon = document.getElementById("temperature-icon");
 
+    let currentScheme = getScheme();
+
     if (theme) {
       root.style.setProperty("color-scheme", theme);
-      themeIcon.src = `./icons/theme-switch--${theme}.svg`;
-      searchIcon.src = `./icons/search--${theme}.svg`;
+
+      themeIcon.src = icons.ui[`theme-switch--${theme}`];
+      searchIcon.src = icons.ui[`search--${theme}`];
 
       return;
     }
 
-    if (currentColorScheme === "light") {
-      root.style.setProperty("color-scheme", "dark");
-      themeIcon.src = "./icons/theme-switch--dark.svg";
-      searchIcon.src = "./icons/search--dark.svg";
+    const nextTheme = currentScheme === "light" ? "dark" : "light";
+    root.style.setProperty("color-scheme", nextTheme);
 
-      if (weatherIcon.src !== "http://localhost:8080/") {
-        weatherIcon.src = weatherIcon.src.replace("-dark", "");
+    themeIcon.src = icons.ui[`theme-switch--${nextTheme}`];
+    searchIcon.src = icons.ui[`search--${nextTheme}`];
+
+    if (weatherIcon.dataset.icon) {
+      weatherIcon.src = getWeatherIcon(weatherIcon.dataset.icon, nextTheme);
+    }
+
+    days.forEach((el) => {
+      if (el.dataset.icon) {
+        el.src = getWeatherIcon(el.dataset.icon, nextTheme);
       }
-
-      days.forEach((el) => {
-        console.log(el);
-        if (el.src !== "http://localhost:8080/") {
-          el.src = el.src.replace("-dark", "");
-        }
-      });
-
-      return;
-    }
-
-    if (currentColorScheme === "dark") {
-      root.style.setProperty("color-scheme", "light");
-      themeIcon.src = "./icons/theme-switch--light.svg";
-      searchIcon.src = "./icons/search--light.svg";
-
-      if (weatherIcon.src !== "http://localhost:8080/") {
-        const split = weatherIcon.src.split(".");
-        weatherIcon.src = `${split[0]}-dark.svg`;
-      }
-
-      days.forEach((el) => {
-        console.log(el);
-        if (el.src !== "http://localhost:8080/") {
-          const split = el.src.split(".");
-          el.src = `${split[0]}-dark.svg`;
-        }
-      });
-
-      return;
-    }
+    });
   },
 
   updateWeatherContent(stats) {
@@ -73,16 +59,18 @@ const domActions = {
       "weather-precipitation",
     );
     const weatherHumidity = document.getElementById("weather-humidity");
-    console.log(weatherHumidity, weatherHumidity.textContent);
     const weatherDescription = document.getElementById("weather-description");
     const days = document.querySelectorAll(".day-container");
+
+    const scheme = getScheme();
 
     locationFlag.src = stats.locationFlag || "--";
     locationMain.textContent = stats.locationMain || "--";
     locationSecondary.textContent = stats.locationSecondary || "--";
     locationWeather.textContent = stats.locationWeather || "--°";
-    console.log(currentTheme);
-    weatherIcon.src = `./icons/weather/${stats.weatherIcon}${currentTheme === "light" ? "-dark" : ""}.svg`;
+
+    weatherIcon.dataset.icon = stats.weatherIcon;
+    weatherIcon.src = getWeatherIcon(stats.weatherIcon, scheme);
 
     weatherWind.textContent = stats.weatherWind || "Wind: -- km/h";
     weatherPrecipitation.textContent =
@@ -91,12 +79,18 @@ const domActions = {
     weatherDescription.textContent = stats.weatherDescription || "--";
 
     for (let i = 0; i <= 6; i++) {
-      console.log(currentTheme);
-      days[i].querySelector(`#day-${i}`).textContent =
-        stats.week[i].datetimesingle;
-      days[i].querySelector(".day-temp").textContent = `${stats.week[i].temp}°`;
-      days[i].querySelector(".day-icon").src =
-        `./icons/weather/${stats.week[i].icon}${currentTheme === "light" ? "-dark" : ""}.svg`;
+      const day = days[i];
+      const iconKey = stats.week[i].icon;
+
+      day.querySelector(`#day-${i}`).textContent = stats.week[i].datetimesingle;
+
+      day.querySelector(".day-temp").textContent = `${stats.week[i].temp}°`;
+
+      const dayIcon = day.querySelector(".day-icon");
+
+
+      dayIcon.dataset.icon = iconKey;
+      dayIcon.src = getWeatherIcon(iconKey, scheme);
     }
   },
 
