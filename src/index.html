@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/index.css" />
+  </head>
+  <body>
+    <header class="app__header">
+      <h2 class="app__title">Weather App</h2>
+      <div class="container searchbar-container">
+        <input id="location-input" class="app__searchbar" type="text" />
+        <img
+          id="search-icon"
+          class="app__searchbar-icon"
+          src="./icons/search--light.svg"
+          alt=""
+        />
+      </div>
+      <button id="theme-switcher" class="app__theme-switch" type="button">
+        <img
+          id="theme-icon"
+          src="./icons/theme-switch--light.svg"
+          alt="theme switcher, current theme light mode."
+        />
+      </button>
+    </header>
+
+    <main class="app__main">
+      <div class="app__weather-content">
+        <div class="weather-section--big weather__location-section">
+          <div class="weather__container--primary">
+            <h2 class="weather__title-primary" id="location-main">--</h2>
+            <div class="weather__container--secondary-col">
+              <h3 class="weather__title-secondary" id="location-secondary">
+                --
+              </h3>
+            </div>
+          </div>
+
+          <img id="location-flag" class="weather__location-flag" alt="" />
+        </div>
+        <div class="weather-section--small weather__temperature-section">
+          <div class="weather__container--primary">
+            <div class="wheather__temperature-details">
+              <h2 class="weather__title-primary">
+                <p id="location-weather">--°C</p>
+                <button id="degree-switch" class="temperature-option">
+                  /F
+                </button>
+              </h2>
+              <img id="temperature-icon" alt="" />
+
+              <div>
+                <p id="weather-wind" class="weather__temperature-detail">
+                  Wind: -- km/h
+                </p>
+                <p
+                  id="weather-precipitation"
+                  class="weather__temperature-detail"
+                >
+                  Precipitation: --%
+                </p>
+                <p id="weather-humidity" class="weather__temperature-detail">
+                  Humidity:--%
+                </p>
+              </div>
+            </div>
+
+            <div class="weather__container--secondary-row">
+              <h3 id="weather-description" class="weather__title-secondary">
+                --
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="weather-section--big weather__week-section">
+          <div class="weather__container--primary width-100">
+            <h2 class="weather__title-primary" id="weather-week">Week</h2>
+            <div class="weather__container--secondary-col">
+              <div class="weather__title-secondary width-100">
+                <div class="weather__week-days">
+                  <div class="day-container">
+                    <p id="day-0">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                  <div class="day-container">
+                    <p id="day-1">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                  <div class="day-container">
+                    <p id="day-2">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                  <div class="day-container">
+                    <p id="day-3">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                  <div class="day-container">
+                    <p id="day-4">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                  <div class="day-container">
+                    <p id="day-5">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                  <div class="day-container">
+                    <p id="day-6">-</p>
+                    <img class="day-icon" src="" alt="" />
+                    <div class="day-divisor"></div>
+                    <p class="day-temp"></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="weather__week-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
